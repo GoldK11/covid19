@@ -1,7 +1,8 @@
 # React Practice
 
 함수형 컴포넌트와 친해지기 위한 리액트 실습
-`useEffect` `API통신`
+`useEffect` `API통신`   
+![리액트_실습_1차](https://user-images.githubusercontent.com/30401541/117922388-57086400-b32d-11eb-8c6c-751470ab8b96.png)  
 
 ## 주요 내용
 
