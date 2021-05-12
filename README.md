@@ -1,7 +1,7 @@
 # React Practice
 
 함수형 컴포넌트와 친해지기 위한 리액트 실습
-`useEffect`
+`useEffect` `API통신`
 
 ## 주요 내용
 
