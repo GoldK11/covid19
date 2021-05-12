@@ -2,20 +2,23 @@ import { useState, useEffect, React } from "react";
 import { Bar, Line, Doughnut } from "react-chartjs-2";
 import axios from "axios";
 
-const Contents = () => {
+const Contents = (props) => {
   const [confirmedData, setConfirmedData] = useState({});
   const [activeData, setActiveData] = useState({});
   const [summarydData, setSummarydData] = useState({});
 
+  const chartsInfos = {
+    confirmed: { title: "누적 확진자", data: confirmedData, component: Bar },
+    active: { title: "월별 격리자", data: activeData, component: Line },
+    summary: { title: "통계", data: summarydData, component: Doughnut },
+  };
+
   useEffect(() => {
     const fetchEvents = async () => {
-      const res = await axios.get(
-        "https://api.covid19api.com/country/kr?from=2020-01-01T00:00:00Z&to=2020-12-31T00:00:00Z"
-      );
+      const res = await axios.get(props.url);
       makeData(res.data);
     };
     const makeData = (items) => {
-      console.log("makeData", items);
       let result = items.reduce(
         (acc, cur) => {
           const [month, confirmed, active, death, recovered] = [
@@ -39,7 +42,7 @@ const Contents = () => {
         labels: result.date,
         datasets: [
           {
-            label: chartsInfos.confirmed.label,
+            label: "누적 확진자",
             backgroundColor: "salmon",
             fill: true,
             data: result.confirmed,
@@ -50,7 +53,7 @@ const Contents = () => {
         labels: result.date,
         datasets: [
           {
-            label: chartsInfos.active.label,
+            label: "월별 격리자",
             borderColor: "#adadf8",
             fill: false,
             data: result.active,
@@ -61,7 +64,7 @@ const Contents = () => {
         labels: ["누적 확진자", "사망", "격리해제"],
         datasets: [
           {
-            label: chartsInfos.summary.label,
+            label: "통계",
             backgroundColor: ["#6287da", "#5eac76", "#ee6e91"],
             data: [
               result.confirmed[11],
@@ -74,20 +77,14 @@ const Contents = () => {
     };
 
     fetchEvents();
-  }, []);
+  }, [props]);
   // 중요  useEffect의 두번째 인자!!!!!!
-
-  const chartsInfos = {
-    confirmed: { label: "누적 확진자", data: confirmedData, component: Bar },
-    active: { label: "월별 격리자", data: activeData, component: Line },
-    summary: { label: "통계", data: summarydData, component: Doughnut },
-  };
 
   let myComponent = Object.keys(chartsInfos).map((key) => {
     const ChartComponent = chartsInfos[key].component;
     const chartOptions = {
       plugins: {
-        title: { display: true, text: chartsInfos[key].label, fontSize: 24 },
+        title: { display: true, text: chartsInfos[key].title, fontSize: 24 },
         legend: { display: true, position: "bottom" },
       },
       maintainAspectRatio: false,
