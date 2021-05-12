@@ -78,21 +78,22 @@ const Contents = () => {
   // 중요  useEffect의 두번째 인자!!!!!!
 
   const chartsInfos = {
-    confirmed: { label: "누적 확진자", data: confirmedData, components: Bar },
-    active: { label: "월별 격리자", data: activeData, components: Line },
-    summary: { label: "통계", data: summarydData, components: Doughnut },
+    confirmed: { label: "누적 확진자", data: confirmedData, component: Bar },
+    active: { label: "월별 격리자", data: activeData, component: Line },
+    summary: { label: "통계", data: summarydData, component: Doughnut },
   };
 
   let myComponent = Object.keys(chartsInfos).map((key) => {
-    const ChartComponent = chartsInfos[key].components;
+    const ChartComponent = chartsInfos[key].component;
     const chartOptions = {
       plugins: {
-        title: { display: true, text: chartsInfos[key].label, fontSize: 16 },
+        title: { display: true, text: chartsInfos[key].label, fontSize: 24 },
         legend: { display: true, position: "bottom" },
       },
+      maintainAspectRatio: false,
     };
     return (
-      <div key={key}>
+      <div key={key} className="chart">
         <ChartComponent data={chartsInfos[key].data} options={chartOptions} />
       </div>
     );
